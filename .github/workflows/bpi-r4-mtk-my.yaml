@@ -162,6 +162,19 @@ jobs:
           cd openwrt;
           grep "=m" .config | grep -v 'CONFIG_PACKAGE_libustream-mbedtls=m' | while read -r line; do module=$(echo "$line" | cut -f1 -d'='); sed -i "s/^$line$/# $module is not set/" .config; done
 
+      - name: Add workaround for missing config
+        run: |
+          cd openwrt;
+          echo 'CONFIG_PINCTRL_MT7987=y' >> target/linux/mediatek/filogic/config-6.6
+          echo 'CONFIG_COMMON_CLK_MT7987=y' >> target/linux/mediatek/filogic/config-6.6
+
+      - name: revert bad commit
+        run: |
+          cd openwrt;
+          sed -i 's/c0df580adbd4d555ecc1962dbe88e91d75b67a4e/965c4bf49658342ced0bd6e7cb069571b4a1ddff/g' package/libs/libnl-tiny/Makefile
+          sed -i 's/1064a27824d99a93cbf8dbc808caf2cb277f1825b378ec6076d2ecfb8866a81f/4b56499e71f5f10b123e1c7ee13dbfcd970de560bff8d16ab39dc25c9ff743cb/g' package/libs/libnl-tiny/Makefile
+          sed -i 's/2025-03-19/2023-12-05/g' package/libs/libnl-tiny/Makefile
+
       - name: Build the firmware image
         run: |
           cd openwrt;
