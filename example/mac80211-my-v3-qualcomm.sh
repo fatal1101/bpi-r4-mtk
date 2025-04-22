@@ -606,27 +606,27 @@ mac80211_hostapd_setup_base() {
 			pp_bitmap \
 			pp_mode
 
-		append base_cfg "ieee80211be=1" "$N"
-		if [ "$etxbfen" -eq 0 ]; then
-			append base_cfg "eht_su_beamformee=1" "$N"
-		else
-			append base_cfg "eht_su_beamformer=1" "$N"
-			append base_cfg "eht_su_beamformee=1" "$N"
-			append base_cfg "eht_mu_beamformer=1" "$N"
-		fi
-		[ "$hwmode" = "a" ] && {
-			case $htmode in
-				EHT320*)
-					append base_cfg "eht_oper_chwidth=$eht_oper_chwidth" "$N"
-					append base_cfg "eht_oper_centr_freq_seg0_idx=$eht_oper_centr_freq_seg0_idx" "$N"
-					append base_cfg "eht_bw320_offset=$eht_bw320_offset" "$N"
-				;;
-				*)
-					append base_cfg "eht_oper_chwidth=$vht_oper_chwidth" "$N"
-					append base_cfg "eht_oper_centr_freq_seg0_idx=$vht_center_seg0" "$N"
-				;;
-			esac
-		}
+#		append base_cfg "ieee80211be=1" "$N"
+#		if [ "$etxbfen" -eq 0 ]; then
+#			append base_cfg "eht_su_beamformee=1" "$N"
+#		else
+##			append base_cfg "eht_su_beamformer=1" "$N"
+##			append base_cfg "eht_su_beamformee=1" "$N"
+##			append base_cfg "eht_mu_beamformer=1" "$N"
+#		fi
+#		[ "$hwmode" = "a" ] && {
+#			case $htmode in
+#				EHT320*)
+##					append base_cfg "eht_oper_chwidth=$eht_oper_chwidth" "$N"
+##					append base_cfg "eht_oper_centr_freq_seg0_idx=$eht_oper_centr_freq_seg0_idx" "$N"
+##					append base_cfg "eht_bw320_offset=$eht_bw320_offset" "$N"
+#				;;
+#				*)
+##					append base_cfg "eht_oper_chwidth=$vht_oper_chwidth" "$N"
+##					append base_cfg "eht_oper_centr_freq_seg0_idx=$vht_center_seg0" "$N"
+#				;;
+#			esac
+#		}
 
 		if [ -n "$pp_bitmap" ]; then
 			append base_cfg "punct_bitmap=$pp_bitmap" "$N"
@@ -640,13 +640,13 @@ mac80211_hostapd_setup_base() {
 # dpawlik: why it raises: unknown configuration item 'ibf_enable'
 # where ibf_enabled=0
 # ${itxbfen:+ibf_enable=$itxbfen}
+# ${tx_burst:+tx_queue_data2_burst=$tx_burst}
 
 	hostapd_prepare_device_config "$hostapd_conf_file" nl80211
 	cat >> "$hostapd_conf_file" <<EOF
 ${channel:+channel=$channel}
 ${channel_list:+chanlist=$channel_list}
 ${hostapd_noscan:+noscan=1}
-${tx_burst:+tx_queue_data2_burst=$tx_burst}
 ${mbssid:+mbssid=$mbssid}
 ${mu_onoff:+mu_onoff=$mu_onoff}
 ${rnr:+rnr=$rnr}
