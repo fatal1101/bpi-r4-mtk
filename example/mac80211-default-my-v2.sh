@@ -449,11 +449,14 @@ mac80211_hostapd_setup_base() {
 			he_su_beamformer:1 \
 			he_su_beamformee:1 \
 			he_mu_beamformer:1 \
+			eht_su_beamformer:1 \
+			eht_su_beamformee:1 \
+			eht_mu_beamformer:1 \
 			he_twt_required:0 \
 			he_spr_sr_control:3 \
 			he_spr_psr_enabled:0 \
 			he_spr_non_srg_obss_pd_max_offset:0 \
-			he_bss_color:128 \
+			he_bss_color:1 \
 			he_bss_color_enabled:1
 
 		he_phy_cap=$(iw phy "$phy" info | sed -n '/HE Iftypes: .*AP/,$p' | awk -F "[()]" '/HE PHY Capabilities/ { print $2 }' | head -1)
@@ -486,33 +489,14 @@ mac80211_hostapd_setup_base() {
 			append base_cfg "he_bss_color_disabled=1" "$N"
 		fi
 
-
-		append base_cfg "he_mu_edca_ac_be_ecwmin=9" "$N"
-		append base_cfg "he_mu_edca_ac_be_ecwmax=10" "$N"
-		append base_cfg "he_mu_edca_ac_be_timer=255" "$N"
-		append base_cfg "he_mu_edca_ac_bk_aifsn=15" "$N"
-		append base_cfg "he_mu_edca_ac_bk_aci=1" "$N"
-		append base_cfg "he_mu_edca_ac_bk_ecwmin=9" "$N"
-		append base_cfg "he_mu_edca_ac_bk_ecwmax=10" "$N"
-		append base_cfg "he_mu_edca_ac_bk_timer=255" "$N"
-		append base_cfg "he_mu_edca_ac_vi_ecwmin=5" "$N"
-		append base_cfg "he_mu_edca_ac_vi_ecwmax=7" "$N"
-		append base_cfg "he_mu_edca_ac_vi_aifsn=5" "$N"
-		append base_cfg "he_mu_edca_ac_vi_aci=2" "$N"
-		append base_cfg "he_mu_edca_ac_vi_timer=255" "$N"
-		append base_cfg "he_mu_edca_ac_vo_aifsn=5" "$N"
-		append base_cfg "he_mu_edca_ac_vo_aci=3" "$N"
-		append base_cfg "he_mu_edca_ac_vo_timer=255" "$N"
-
 		append base_cfg "he_default_pe_duration=4" "$N"
 		append base_cfg "he_rts_threshold=1023" "$N"
 		append base_cfg "he_mu_edca_qos_info_param_count=0" "$N"
 		append base_cfg "he_mu_edca_qos_info_q_ack=0" "$N"
 		append base_cfg "he_mu_edca_qos_info_queue_request=0" "$N"
 		append base_cfg "he_mu_edca_qos_info_txop_request=0" "$N"
-
 		append base_cfg "he_mu_edca_ac_be_aifsn=8" "$N"
-		append base_cfg "he_mu_edca_ac_be_aci=0" "$N"
+		append base_cfg "he_mu_edca_ac_vo_aci=3" "$N"
 		append base_cfg "he_mu_edca_ac_vo_ecwmin=9" "$N"
 		append base_cfg "he_mu_edca_ac_vo_ecwmax=10" "$N"
 	fi
