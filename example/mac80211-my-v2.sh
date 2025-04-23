@@ -573,30 +573,30 @@ mac80211_hostapd_setup_base() {
 
 		append base_cfg "he_default_pe_duration=4" "$N"
 		append base_cfg "he_rts_threshold=1023" "$N"
-##		append base_cfg "he_mu_edca_qos_info_param_count=0" "$N"
-##		append base_cfg "he_mu_edca_qos_info_q_ack=0" "$N"
-##		append base_cfg "he_mu_edca_qos_info_queue_request=0" "$N"
-##		append base_cfg "he_mu_edca_qos_info_txop_request=0" "$N"
-##		append base_cfg "he_mu_edca_ac_be_aifsn=0" "$N"
-#		append base_cfg "he_mu_edca_ac_be_aci=0" "$N"
-#		append base_cfg "he_mu_edca_ac_be_ecwmin=9" "$N"
-#		append base_cfg "he_mu_edca_ac_be_ecwmax=10" "$N"
-##		append base_cfg "he_mu_edca_ac_be_timer=3" "$N"
-##		append base_cfg "he_mu_edca_ac_bk_aifsn=0" "$N"
-#		append base_cfg "he_mu_edca_ac_bk_aci=1" "$N"
-#		append base_cfg "he_mu_edca_ac_bk_ecwmin=9" "$N"
-#		append base_cfg "he_mu_edca_ac_bk_ecwmax=10" "$N"
-#		append base_cfg "he_mu_edca_ac_bk_timer=3" "$N"
-#		append base_cfg "he_mu_edca_ac_vi_ecwmin=5" "$N"
-#		append base_cfg "he_mu_edca_ac_vi_ecwmax=7" "$N"
-#		append base_cfg "he_mu_edca_ac_vi_aifsn=0" "$N"
-#		append base_cfg "he_mu_edca_ac_vi_aci=2" "$N"
-#		append base_cfg "he_mu_edca_ac_vi_timer=3" "$N"
-#		append base_cfg "he_mu_edca_ac_vo_aifsn=0" "$N"
-#		append base_cfg "he_mu_edca_ac_vo_aci=3" "$N"
-#		append base_cfg "he_mu_edca_ac_vo_ecwmin=5" "$N"
-#		append base_cfg "he_mu_edca_ac_vo_ecwmax=7" "$N"
-#		append base_cfg "he_mu_edca_ac_vo_timer=3" "$N"
+		append base_cfg "he_mu_edca_qos_info_param_count=0" "$N"
+		append base_cfg "he_mu_edca_qos_info_q_ack=0" "$N"
+		append base_cfg "he_mu_edca_qos_info_queue_request=0" "$N"
+		append base_cfg "he_mu_edca_qos_info_txop_request=0" "$N"
+		append base_cfg "he_mu_edca_ac_be_aifsn=0" "$N"
+		append base_cfg "he_mu_edca_ac_be_aci=0" "$N"
+		append base_cfg "he_mu_edca_ac_be_ecwmin=9" "$N"
+		append base_cfg "he_mu_edca_ac_be_ecwmax=10" "$N"
+		append base_cfg "he_mu_edca_ac_be_timer=3" "$N"
+		append base_cfg "he_mu_edca_ac_bk_aifsn=0" "$N"
+		append base_cfg "he_mu_edca_ac_bk_aci=1" "$N"
+		append base_cfg "he_mu_edca_ac_bk_ecwmin=9" "$N"
+		append base_cfg "he_mu_edca_ac_bk_ecwmax=10" "$N"
+		append base_cfg "he_mu_edca_ac_bk_timer=3" "$N"
+		append base_cfg "he_mu_edca_ac_vi_ecwmin=5" "$N"
+		append base_cfg "he_mu_edca_ac_vi_ecwmax=7" "$N"
+		append base_cfg "he_mu_edca_ac_vi_aifsn=0" "$N"
+		append base_cfg "he_mu_edca_ac_vi_aci=2" "$N"
+		append base_cfg "he_mu_edca_ac_vi_timer=3" "$N"
+		append base_cfg "he_mu_edca_ac_vo_aifsn=0" "$N"
+		append base_cfg "he_mu_edca_ac_vo_aci=3" "$N"
+		append base_cfg "he_mu_edca_ac_vo_ecwmin=5" "$N"
+		append base_cfg "he_mu_edca_ac_vo_ecwmax=7" "$N"
+		append base_cfg "he_mu_edca_ac_vo_timer=3" "$N"
 	fi
 
 	set_default tx_burst 2
@@ -640,13 +640,13 @@ mac80211_hostapd_setup_base() {
 # dpawlik: why it raises: unknown configuration item 'ibf_enable'
 # where ibf_enabled=0
 # ${itxbfen:+ibf_enable=$itxbfen}
+# ${tx_burst:+tx_queue_data2_burst=$tx_burst}
 
 	hostapd_prepare_device_config "$hostapd_conf_file" nl80211
 	cat >> "$hostapd_conf_file" <<EOF
 ${channel:+channel=$channel}
 ${channel_list:+chanlist=$channel_list}
 ${hostapd_noscan:+noscan=1}
-${tx_burst:+tx_queue_data2_burst=$tx_burst}
 ${mbssid:+mbssid=$mbssid}
 ${mu_onoff:+mu_onoff=$mu_onoff}
 ${rnr:+rnr=$rnr}
