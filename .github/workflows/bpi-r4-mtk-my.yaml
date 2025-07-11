@@ -85,56 +85,24 @@ jobs:
           cd mtk-openwrt-feeds;
           git checkout ${{ env.MEDIATEK_REF }}
 
-      - name: Change autobuild rules - important
+      - name: Clone mediatek
         run: |
-          cd openwrt;
-          cp ../my_files/rules ../mtk-openwrt-feeds/autobuild/unified
-
-      - name: Make sed
-        run: |
-          sed -i 's/CONFIG_PACKAGE_perf=y/# CONFIG_PACKAGE_perf is not set/' \
-              ./mtk-openwrt-feeds/autobuild/unified/filogic/mac80211/24.10/defconfig \
-              ./mtk-openwrt-feeds/autobuild/autobuild_5.4_mac80211_release/mt7988_wifi7_mac80211_mlo/.config \
-              ./mtk-openwrt-feeds/autobuild/autobuild_5.4_mac80211_release/mt7986_mac80211/.config
-
-          sed -i 's/CONFIG_PACKAGE_kmod-thermal=y/# CONFIG_PACKAGE_kmod-thermal is not set/' \
-              ./mtk-openwrt-feeds/autobuild/autobuild_5.4_mac80211_release/mt7988_wifi7_mac80211_mlo/.config \
-              ./mtk-openwrt-feeds/autobuild/autobuild_5.4_mac80211_release/mt7981_mac80211/.config \
-              ./mtk-openwrt-feeds/autobuild/autobuild_5.4_mac80211_release/mt7986_mac80211/.config
-
-      - name: Add temporary workaround
-        run: |
-          cd openwrt;
-          cp ../my_files/ethtool/Makefile package/network/utils/ethtool/Makefile
-          rm ../mtk-openwrt-feeds/autobuild/unified/global/24.10/patches-base/0007-package-network-ethtool-downgrade-to-version-6.7.patch || true
-
-      - name: Run Mediatek prepare
-        run: |
-          cd openwrt;
-          bash ../mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic-mac80211-mt7988_rfb-mt7996 prepare log_file=make
+          cp -af ./feeds/mtk_openwrt_feed/24.10/files/* .
+          for file in $(find ./feeds/mtk_openwrt_feed/24.10/patches-base -name "*.patch" | sort); do patch -f -p1 -i ${file}; done
 
       - name: Add patch for wifi power
         run: |
           cd openwrt;
            curl -SL https://github.com/openwrt/mt76/commit/aaf90b24fde77a38ee9f0a60d7097ded6a94ad1f.patch | tee package/kernel/mt76/patches/9997-use-tx_power-from-default-fw-if-EEPROM-contains-0s.patch
 
-      - name: Do not create sample wireless networks
-        run: |
-          cd openwrt;
-          git checkout package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc
+
 
       - name: Print current config file
         run: |
           cd openwrt;
           cat .config
 
-      - name: Configure firmware image
-        run: |
-          cd openwrt;
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/${{ env.DEVICE_CONFIG }} > .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/main-router >> .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot >> .config
-          curl -SL https://raw.githubusercontent.com/danpawlik/openwrt-builder/master/configs/common/snapshot-mtk-feed  >> .config
+
 
       - name: Enable openssl
         run: |
@@ -179,7 +147,7 @@ jobs:
       - name: Build the firmware image
         run: |
           cd openwrt;
-          make $(nproc) defconfig download world
+          make V=s -j$(nproc) defconfig download world
 
       - name: Compress all packages
         run: |
