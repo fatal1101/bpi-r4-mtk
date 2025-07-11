@@ -1,4 +1,4 @@
----
+
 # More about feed: https://git01.mediatek.com/plugins/gitiles/openwrt/feeds/mtk-openwrt-feeds/
 #
 # NOTE: There are two versions:
@@ -20,7 +20,7 @@ on:
           - non-poe
 
 env:
-  REMOTE_REPOSITORY: danpawlik/bpi-r4-mtk
+  REMOTE_REPOSITORY: fatal1101/bpi-r4-mtk
   REMOTE_BRANCH: main
   # OpenWrt
   OPENWRT_REPOSITORY: https://github.com/openwrt/openwrt
