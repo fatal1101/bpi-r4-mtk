@@ -179,7 +179,7 @@ jobs:
       - name: Build the firmware image
         run: |
           cd openwrt;
-          make -j $(nproc) defconfig download world
+          make -j1 V=s $(nproc) defconfig download world
 
       - name: Compress all packages
         run: |
